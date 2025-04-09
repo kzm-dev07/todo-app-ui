@@ -11,7 +11,7 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   session: {
-    maxAge: 1 * 1 * 10 * 60,
+    maxAge: 1 * 1 * 5 * 60,
   },
   callbacks: {
     /** @see https://next-auth.js.org/getting-started/example#extensibility */
