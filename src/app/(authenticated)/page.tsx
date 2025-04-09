@@ -1,6 +1,7 @@
 
-import { fetchTasks, register } from '@/actions/TaskActions';
+import { fetchTasks } from '@/actions/TaskActions';
 import { Task } from '@/components/Task';
+import { TaskForm } from '@/components/TaskForm';
 import { checkSession } from '@/utils/auth';
 
 export type TaskType = {
@@ -26,10 +27,7 @@ export default async function Page() {
           ))}
         </ul>
         <div className="mt-5">
-          <form className="flex justify-between" action={register}>
-            <input className="p-1 border-1 border-gray-300 rounded" name="title" />
-            <button className="bg-blue-500 text-white hover:bg-blue-300 px-4 py-1 text-sm rounded" type="submit">追加</button>
-          </form>
+          <TaskForm />
         </div>
       </div>
     </main>
