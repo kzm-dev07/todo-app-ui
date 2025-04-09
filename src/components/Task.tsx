@@ -38,13 +38,13 @@ export const Task = ({ task }: Props) => {
             checked={isDone}
             onChange={handleOnCheck}
           />
-          <input
+          {isDone ? <s className='p-1'>{title}</s> : <input
             name="title"
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             className='p-1'
-          />
+          />}
         </div>
         <div className="flex gap-x-2">
           <button
