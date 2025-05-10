@@ -3,6 +3,7 @@
 import { TaskType } from "@/app/(authenticated)/page";
 import { getAccessToken } from "@/utils/auth";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 export async function fetchTasks() {
   const res = await fetch(`${process.env.TASK_API_ENDPOINT_BASE}/tasks`, {
@@ -15,6 +16,8 @@ export async function fetchTasks() {
   if (res.status === 200) {
     const json = await res.json();
     return json.tasks;
+  } else if (res.status === 401) {
+    redirect('/login');
   } else {
     return [];
   }
@@ -30,7 +33,7 @@ export async function register(formData: FormData) {
     },
     body: JSON.stringify({ title: title })
   });
-  if (res.ok) revalidatePath('/');
+  checkResponse(res);
 };
 
 export async function updateById(task: TaskType) {
@@ -42,7 +45,7 @@ export async function updateById(task: TaskType) {
     },
     body: JSON.stringify({ title: task.title, isDone: task.isDone })
   });
-  if (res.ok) revalidatePath('/');
+  checkResponse(res);
 };
 
 export async function deleteById(key: string) {
@@ -53,5 +56,15 @@ export async function deleteById(key: string) {
       'Authorization': `Bearer ${await getAccessToken()}`,
     },
   });
-  if (res.ok) revalidatePath('/');
+  checkResponse(res);
+};
+
+
+const checkResponse = (res: Response) => {
+  console.log(res.status);
+  if (res.ok) {
+    revalidatePath('/')
+  } else if (res.status === 401) {
+    redirect('/login');
+  }
 };

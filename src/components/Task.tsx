@@ -15,14 +15,18 @@ export const Task = ({ task }: Props) => {
     setIsDone(task.isDone)
   }, [task]);
 
-  const handleUpdate = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleUpdate = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    updateById({ key: task.key, title, isDone });
+    await updateById({ key: task.key, title, isDone });
   };
 
-  const handleDelete = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleDelete = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     deleteById(task.key);
+  };
+  const handleOnCheck = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    updateById({ key: task.key, title, isDone: e.target.checked });
   };
   return (
     <li key={task.key}>
@@ -32,15 +36,15 @@ export const Task = ({ task }: Props) => {
             name="isDone"
             type="checkbox"
             checked={isDone}
-            onChange={(e) => setIsDone(e.target.checked)}
+            onChange={handleOnCheck}
           />
-          <input
+          {isDone ? <s className='p-1 w-45'>{title}</s> : <input
             name="title"
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className='p-1'
-          />
+            className='p-1 w-45'
+          />}
         </div>
         <div className="flex gap-x-2">
           <button
